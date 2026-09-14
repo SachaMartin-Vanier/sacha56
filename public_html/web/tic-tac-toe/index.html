@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Le Morpion</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cedarville+Cursive&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    
+        <header>
+            <h1>C'est parti !</h1>
+        </header>
+        <section class="player-wrapper">
+            <div class="player">
+                <h2>Joueur</h2>
+                <img src="assets/rond.svg" alt="rond">
+            </div>
+            <div class="player visible">
+                <h2>Joueur</h2>
+                <img src="assets/croix.svg" alt="croix">
+            </div>
+        </section>
+        <section class="grille-wrapper">
+            <article id="grille">
+                <div class="case right bottom"><canvas class="case-canvas"></canvas></div>
+                <div class="case left right bottom"><canvas class="case-canvas"></canvas></div>
+                <div class="case left bottom"><canvas class="case-canvas"></canvas></div>
+                <div class="case right top bottom"><canvas class="case-canvas"></canvas></div>
+                <div class="case middle"><canvas class="case-canvas"></canvas></div>
+                <div class="case left top bottom"><canvas class="case-canvas"></canvas></div>
+                <div class="case right top"><canvas class="case-canvas"></canvas></div>
+                <div class="case left right top"><canvas class="case-canvas"></canvas></div>
+                <div class="case left top"><canvas class="case-canvas"></canvas></div>
+            </article>
+            <canvas id="ligne-victoire" class="svg-ligne"></canvas>
+        </section>
+        <!-- <div id="ecran-fin" class="ecran-fin">
+            <p id="message"></p>
+            <button id="replay">Rejouer</button>
+        </div> -->
+    <script src="canvas-symbols.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
