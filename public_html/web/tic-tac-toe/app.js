@@ -8,6 +8,7 @@ let cases = document.querySelectorAll(".case");
 let replayBtn = document.querySelector("#replay");
 let panneauMessage = document.querySelector("#message");
 let ligneVictoireCanvas = document.querySelector("#ligne-victoire");
+let grille = document.querySelector("#grille");
 
 
 let joueurX = true; //premier joueur X
@@ -24,6 +25,8 @@ const patrons = [ //les patrons gagnants
     [3, 4, 5],
     [6, 7, 8]
 ];
+
+grille.dataset.currentPlayer = "x";
 
 
 // Ajuste la résolution du canvas à sa taille affichée
@@ -49,6 +52,7 @@ for (let boite of cases) {
                 animerSymbole(canvas, "o");
                 joueurX = true;
             }
+            grille.dataset.currentPlayer = joueurX ? "x" : "o";
             boite.active = false;
             valide();
         }
@@ -129,6 +133,7 @@ replayBtn.addEventListener("click", function () {
     videCases();
     afficheMessage("");
     joueurX = true;
+    grille.dataset.currentPlayer = "x";
     jeuActif = true;
     for (let boite of cases) {
         boite.active = true;

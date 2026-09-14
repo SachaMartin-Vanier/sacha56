@@ -1,9 +1,11 @@
-
 #grille {
-    width: calc(40vmin + 12px);
-    height: calc(40vmin + 12px);
+    width: 60vmin;
+    height: 60vmin;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, 20vmin);
+    grid-template-rows: repeat(3, 20vmin);
+    aspect-ratio: 1;
+    position: relative;
 }
 
 #grille .case {
@@ -11,19 +13,38 @@
     place-items: center;
     height: 20vmin;
     width: 20vmin;
+    box-sizing: border-box;
+    position: relative;
 }
 
 #grille .case-canvas {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     display: block;
     pointer-events: none;
 }
 
-#grille .case:hover {
-    background-image: url('assets/croix.svg');
+#grille .case::after {
+    content: "";
+    position: absolute;
+    inset: 0;
     background-repeat: no-repeat;
     background-position: center;
+    background-size: 80% 80%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease-in-out;
+}
+
+#grille[data-current-player="x"] .case:hover::after {
+    background-image: url('assets/croix1.svg');
+    opacity: 0.3;
+}
+
+#grille[data-current-player="o"] .case:hover::after {
+    background-image: url('assets/rond1.svg');
     opacity: 0.3;
 }
 
@@ -99,8 +120,7 @@ h2 {
 
 .svg-ligne {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
     pointer-events: none;
