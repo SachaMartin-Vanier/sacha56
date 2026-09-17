@@ -10,40 +10,52 @@
 </head>
 
 <body>
-
-    <header>
-        <h1>C'est parti !</h1>
-    </header>
-    <section class="player-wrapper">
-        <div class="player">
-            <h2>Joueur</h2>
-            <img src="assets/rond.svg" alt="rond">
-        </div>
-        <div class="player visible">
-            <h2>Joueur</h2>
-            <img src="assets/croix.svg" alt="croix">
-        </div>
-    </section>
-    <section class="grille-wrapper">
-        <article id="grille">
-            <div class="case right bottom"><canvas class="case-canvas"></canvas></div>
-            <div class="case left right bottom"><canvas class="case-canvas"></canvas></div>
-            <div class="case left bottom"><canvas class="case-canvas"></canvas></div>
-            <div class="case right top bottom"><canvas class="case-canvas"></canvas></div>
-            <div class="case middle"><canvas class="case-canvas"></canvas></div>
-            <div class="case left top bottom"><canvas class="case-canvas"></canvas></div>
-            <div class="case right top"><canvas class="case-canvas"></canvas></div>
-            <div class="case left right top"><canvas class="case-canvas"></canvas></div>
-            <div class="case left top"><canvas class="case-canvas"></canvas></div>
-            <canvas id="ligne-victoire" class="svg-ligne"></canvas>
-        </article>
-    </section>
-    <div id="ecran-fin" class="ecran-fin">
-        <p id="message"></p>
-        <button id="replay">Rejouer</button>
+    <div id="ecran-attente" class="ecran-attente visible">
+        <h2>Le Morpion</h2>
+        <button class="replay-btn" id="jouer">Jouer</button>
+        <span class="replay-instructions">(cliquez ici pour jouer)</span>
     </div>
-    <script src="canvas-symbols.js"></script>
-    <script src="app.js"></script>
+    <main>
+        <header>
+            <h1>C'est parti !</h1>
+        </header>
+        <section class="player-wrapper">
+            <div class="player" data-player="o">
+                <h2>Joueur</h2>
+                <img src="assets/rond.svg" alt="rond">
+            </div>
+            <div class="player visible" data-player="x">
+                <h2>Joueur</h2>
+                <img src="assets/croix.svg" alt="croix">
+            </div>
+        </section>
+        <img src="assets/regle.svg" alt="regle" class="regle">
+        <img src="assets/pencil.svg" alt="crayon" class="pencil">
+        <section class="grille-wrapper">
+            <article id="grille">
+                <div class="case right bottom"><canvas class="case-canvas"></canvas></div>
+                <div class="case left right bottom"><canvas class="case-canvas"></canvas></div>
+                <div class="case left bottom"><canvas class="case-canvas"></canvas></div>
+                <div class="case right top bottom"><canvas class="case-canvas"></canvas></div>
+                <div class="case middle"><canvas class="case-canvas"></canvas></div>
+                <div class="case left top bottom"><canvas class="case-canvas"></canvas></div>
+                <div class="case right top"><canvas class="case-canvas"></canvas></div>
+                <div class="case left right top"><canvas class="case-canvas"></canvas></div>
+                <div class="case left top"><canvas class="case-canvas"></canvas></div>
+                <canvas id="grille-dessin" class="grille-canvas"></canvas>
+                <canvas id="ligne-victoire" class="svg-ligne"></canvas>
+            </article>
+        </section>
+        <div id="ecran-fin" class="ecran-fin">
+            <img class="gif-fin" src="assets/W9k1.gif" alt="">
+            <p id="message"></p>
+            <button class="replay-btn" id="replay">Rejouer !!</button>
+            <span class="replay-instructions">(cliquez ici pour rejouer)</span>
+        </div>
+        <img src="assets/cisors.svg" alt="ciseaux" class="cisors">
+        <script src="canvas-symbols.js"></script>
+        <script src="app.js"></script>
+    </main>
 </body>
 
 </html>

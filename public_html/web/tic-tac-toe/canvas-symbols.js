@@ -4,22 +4,29 @@
  */
 
 // Dessine une croix qui s'anime progressivement (progress: 0 à 1)
-function drawX(ctx, canvas, progress) {
+function drawX(ctx, canvas, progress, variationDepart = {}) {
     const w = canvas.width;
     const h = canvas.height;
     ctx.clearRect(0, 0, w, h);
 
     const marge = w * 0.2;
-    ctx.strokeStyle = "#C0392B";
+    ctx.strokeStyle = "#FF0000";
     ctx.lineWidth = 8;
     ctx.lineCap = "round";
 
+    const debutPremiereX = marge + (variationDepart.premiereX || 0);
+    const debutPremiereY = marge + (variationDepart.premiereY || 0);
+    const debutSecondeX = w - marge + (variationDepart.secondeX || 0);
+    const debutSecondeY = marge + (variationDepart.secondeY || 0);
+
     // 1ère diagonale sur la 1ère moitié de l'animation, 2ème diagonale sur la 2ème moitié
     const t1 = Math.min(progress * 2, 1);
-    dessinerTraitAvecJitter(ctx, marge, marge, w - marge, h - marge, t1);
+    const amplitudeT1 = 6 + (1 - Math.min(t1 * 2, 1)) * 6;
+    dessinerTraitAvecJitter(ctx, debutPremiereX, debutPremiereY, w - marge, h - marge, t1, amplitudeT1);
 
     const t2 = Math.max((progress - 0.5) * 2, 0);
-    dessinerTraitAvecJitter(ctx, w - marge, marge, marge, h - marge, t2);
+    const amplitudeT2 = 6 + (1 - Math.min(t2 * 2, 1)) * 6;
+    dessinerTraitAvecJitter(ctx, debutSecondeX, debutSecondeY, marge, h - marge, t2, amplitudeT2);
 }
 
 // Dessine un rond qui s'anime progressivement
@@ -27,17 +34,14 @@ function drawO(ctx, canvas, progress) {
     const w = canvas.width;
     const h = canvas.height;
     ctx.clearRect(0, 0, w, h);
-
     const cx = w / 2;
     const cy = h / 2;
     const rayon = w * 0.28;
-    ctx.strokeStyle = "#2E86C1";
+    ctx.strokeStyle = "#0051FF";
     ctx.lineWidth = 8;
     ctx.lineCap = "round";
-
     const nbPoints = 60;
     const pointsAAfficher = Math.round(nbPoints * progress);
-
     ctx.beginPath();
     for (let i = 0; i <= pointsAAfficher; i++) {
         // angle du cercle + léger tremblement aléatoire pour l'effet crayon
@@ -86,12 +90,56 @@ function animerSymbole(canvas, type, duree = 500) {
     const ctx = canvas.getContext("2d");
     const debut = performance.now();
     const fonctionDessin = type === "x" ? drawX : drawO;
+    const variationDepart = type === "x" ? {
+        premiereX: (Math.random() - 0.5) * canvas.width * 0.12,
+        premiereY: (Math.random() - 0.5) * canvas.height * 0.12,
+        secondeX: (Math.random() - 0.5) * canvas.width * 0.12,
+        secondeY: (Math.random() - 0.5) * canvas.height * 0.12
+    } : {};
 
     function frame(maintenant) {
         const progress = Math.min((maintenant - debut) / duree, 1);
-        fonctionDessin(ctx, canvas, progress);
+        fonctionDessin(ctx, canvas, progress, variationDepart);
         if (progress < 1) requestAnimationFrame(frame);
     }
+    requestAnimationFrame(frame);
+}
+
+// Dessine progressivement les quatre lignes de la grille avec le même effet crayon
+function dessinerGrille(ctx, canvas, progress) {
+    const w = canvas.width;
+    const h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    ctx.strokeStyle = "#013D63";
+    ctx.lineWidth = 7;
+    ctx.lineCap = "round";
+
+    const lignes = [
+        [w / 3, 0, w / 3, h],
+        [w * 2 / 3, 0, w * 2 / 3, h],
+        [0, h / 3, w, h / 3],
+        [0, h * 2 / 3, w, h * 2 / 3]
+    ];
+
+    for (let index = 0; index < lignes.length; index++) {
+        const debut = index * 0.18;
+        const progressionLigne = Math.min(Math.max((progress - debut) / 0.4, 0), 1);
+        const [x1, y1, x2, y2] = lignes[index];
+        dessinerTraitAvecJitter(ctx, x1, y1, x2, y2, progressionLigne, 4, 40);
+    }
+}
+
+// Lance le dessin animé de la grille
+function animerGrille(canvas, duree = 900) {
+    const ctx = canvas.getContext("2d");
+    const debut = performance.now();
+
+    function frame(maintenant) {
+        const progress = Math.min((maintenant - debut) / duree, 1);
+        dessinerGrille(ctx, canvas, progress);
+        if (progress < 1) requestAnimationFrame(frame);
+    }
+
     requestAnimationFrame(frame);
 }
 

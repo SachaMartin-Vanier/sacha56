@@ -7,14 +7,24 @@
 let cases = document.querySelectorAll(".case");
 let replayBtn = document.querySelector("#replay");
 let panneauMessage = document.querySelector("#message");
+let ecranFin = document.querySelector("#ecran-fin");
+let ecranAttente = document.querySelector("#ecran-attente");
+let jouerBtn = document.querySelector("#jouer");
 let ligneVictoireCanvas = document.querySelector("#ligne-victoire");
 let grille = document.querySelector("#grille");
+let grilleDessinCanvas = document.querySelector("#grille-dessin");
+let joueurs = document.querySelectorAll(".player");
 
 
 let joueurX = true; //premier joueur X
 let gagnant = ''; //pas encore de gagnant
 let jeuActif = true;
+let partieCommencee = false;
 let delaiLigneVictoire = null;
+let delaiEcranFin = null;
+const delaiAvantLigneVictoire = 900;
+const dureeLigneVictoire = 500;
+const delaiApresLigneVictoire = 500;
 const patrons = [ //les patrons gagnants
     [0, 1, 2],
     [0, 3, 6],
@@ -28,6 +38,21 @@ const patrons = [ //les patrons gagnants
 
 grille.dataset.currentPlayer = "x";
 
+const actualiserJoueur = function () {
+    const joueurActif = joueurX ? "x" : "o";
+
+    for (let joueur of joueurs) {
+        joueur.classList.remove("visible");
+    }
+
+    const panneauJoueurActif = document.querySelector(`.player[data-player="${joueurActif}"]`);
+    if (panneauJoueurActif) {
+        panneauJoueurActif.classList.add("visible");
+    }
+};
+
+actualiserJoueur();
+
 
 // Ajuste la résolution du canvas à sa taille affichée
 const redimensionnerCanvas = function (canvas) {
@@ -35,12 +60,14 @@ const redimensionnerCanvas = function (canvas) {
     canvas.height = canvas.clientHeight;
 };
 
+redimensionnerCanvas(grilleDessinCanvas);
+
 for (let boite of cases) {
     boite.active = true;
     const canvas = boite.querySelector("canvas");
     redimensionnerCanvas(canvas);
     boite.addEventListener("click", function () {
-        if (boite.active) {
+        if (boite.active && partieCommencee) {
             redimensionnerCanvas(canvas); // au cas où la mise en page aurait changé
             if (joueurX) {
                 boite.dataset.value = "X";
@@ -53,6 +80,7 @@ for (let boite of cases) {
                 joueurX = true;
             }
             grille.dataset.currentPlayer = joueurX ? "x" : "o";
+            actualiserJoueur();
             boite.active = false;
             valide();
         }
@@ -61,6 +89,8 @@ for (let boite of cases) {
 
 // Redessine le symbole (sans ré-animer) si la taille de la grille change
 window.addEventListener("resize", function () {
+    redimensionnerCanvas(grilleDessinCanvas);
+    dessinerGrille(grilleDessinCanvas.getContext("2d"), grilleDessinCanvas, 1);
     for (let boite of cases) {
         const canvas = boite.querySelector("canvas");
         redimensionnerCanvas(canvas);
@@ -82,7 +112,7 @@ const valide = function () {
             val1 === val3) {
             jeuActif = false;
             afficheMessage(`Le gagnant est ${val1}`);
-            delaiLigneVictoire = setTimeout(() => traceLigneSurPatron(patron), 900);
+            delaiLigneVictoire = setTimeout(() => traceLigneSurPatron(patron), delaiAvantLigneVictoire);
             for (let boite of cases) {
                 boite.active = false;
             }
@@ -126,24 +156,55 @@ const traceLigneSurPatron = function (patron) {
 //Affiche message
 const afficheMessage = function (msg) {
     panneauMessage.innerText = msg;
+    panneauMessage.classList.remove("message-x", "message-o", "message-bounce");
+
+    if (msg.includes("X")) {
+        panneauMessage.classList.add("message-x");
+    }
+    else if (msg.includes("O")) {
+        panneauMessage.classList.add("message-o");
+    }
+
+    clearTimeout(delaiEcranFin);
+    if (msg) {
+        delaiEcranFin = setTimeout(
+            () => {
+                ecranFin.classList.add("visible");
+                panneauMessage.classList.add("message-bounce");
+            },
+            delaiAvantLigneVictoire + dureeLigneVictoire + delaiApresLigneVictoire
+        );
+    }
+    else {
+        ecranFin.classList.remove("visible");
+    }
 };
 
 //Jouer encore
+jouerBtn.addEventListener("click", function () {
+    ecranAttente.classList.remove("visible");
+    partieCommencee = true;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        dessinerGrille(grilleDessinCanvas.getContext("2d"), grilleDessinCanvas, 1);
+    }
+    else {
+        animerGrille(grilleDessinCanvas);
+    }
+});
+
 replayBtn.addEventListener("click", function () {
+    clearTimeout(delaiEcranFin);
+    ecranFin.classList.remove("visible");
     videCases();
     afficheMessage("");
     joueurX = true;
     grille.dataset.currentPlayer = "x";
+    actualiserJoueur();
     jeuActif = true;
     for (let boite of cases) {
         boite.active = true;
     }
 });
 
-//changement de joueur après chaque tour
-const Changejoueur = function () {
-    if (joueurX === false) {
-        player.classList.toggle("visible");
-    }
-};
 
