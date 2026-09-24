@@ -6,6 +6,11 @@ body {
     padding: 0;
 }
 
+img[src$=".svg"],
+svg {
+    pointer-events: none;
+}
+
 #grille {
     width: 60vmin;
     height: 60vmin;
@@ -283,6 +288,15 @@ h2 {
     z-index: 2;
 }
 
+.ecran-attente h2 {
+    margin: 0;
+    font-family: "Cedarville Cursive", cursive;
+    font-size: 6em;
+    font-weight: 400;
+    line-height: 1;
+    text-align: center;
+}
+
 .controls {
     display: flex;
     flex-direction: column;
@@ -351,4 +365,5 @@ h2 {
     margin-left: -3em;
     transform: scaleX(-1) rotate(-10deg);
     z-index: 10;
+    pointer-events: none !important;
 }
