@@ -3,6 +3,29 @@
  * Dessin animé de X et O avec effet crayon
  */
 
+// Fenêtres [début, fin] en ms de chaque trait, calées sur les sons (assets/son)
+const synchroSons = {
+    x: [[210, 680], [980, 1280]],                               // Croix-son_01 : 2 traits séparés par une pause
+    o: [[200, 1100]],                                           // Rond-son_01 : un seul trait continu
+    grille: [[60, 360], [680, 900], [1050, 1250], [1370, 1560]], // Grille_01 : 4 traits
+    ligne: [[0, 500]]                                            // Ligne_01 : à caler sur le son une fois ajouté
+};
+
+// Avancement (0 à 1) d'un trait à l'instant donné
+function avancementTrait(temps, [debut, fin]) {
+    return Math.min(Math.max((temps - debut) / (fin - debut), 0), 1);
+}
+
+// Horloge en ms : suit la position de lecture du son quand il joue,
+// sinon (son bloqué ou pas encore démarré) le temps écoulé depuis le lancement
+function creerHorloge(audio) {
+    const debut = performance.now();
+    return function () {
+        if (audio && !audio.paused && audio.currentTime > 0) return audio.currentTime * 1000;
+        return performance.now() - debut;
+    };
+}
+
 // Dessine une croix qui s'anime progressivement (progress: 0 à 1)
 function drawX(ctx, canvas, progress, variationDepart = {}) {
     const w = canvas.width;
@@ -19,12 +42,15 @@ function drawX(ctx, canvas, progress, variationDepart = {}) {
     const debutSecondeX = w - marge + (variationDepart.secondeX || 0);
     const debutSecondeY = marge + (variationDepart.secondeY || 0);
 
-    // 1ère diagonale sur la 1ère moitié de l'animation, 2ème diagonale sur la 2ème moitié
-    const t1 = Math.min(progress * 2, 1);
+    // progress : [avancement 1ère diagonale, avancement 2ème diagonale], ou un nombre global
+    // (1ère diagonale sur la 1ère moitié, 2ème diagonale sur la 2ème moitié)
+    const [t1, t2] = Array.isArray(progress)
+        ? progress
+        : [Math.min(progress * 2, 1), Math.max((progress - 0.5) * 2, 0)];
+
     const amplitudeT1 = 6 + (1 - Math.min(t1 * 2, 1)) * 6;
     dessinerTraitAvecJitter(ctx, debutPremiereX, debutPremiereY, w - marge, h - marge, t1, amplitudeT1);
 
-    const t2 = Math.max((progress - 0.5) * 2, 0);
     const amplitudeT2 = 6 + (1 - Math.min(t2 * 2, 1)) * 6;
     dessinerTraitAvecJitter(ctx, debutSecondeX, debutSecondeY, marge, h - marge, t2, amplitudeT2);
 }
@@ -85,10 +111,11 @@ function dessinerTraitAvecJitter(ctx, x1, y1, x2, y2, t, amplitude = 4, nbPoints
     ctx.stroke();
 }
 
-// Lance l'animation d'un symbole ("x" ou "o") sur un canvas donné
-function animerSymbole(canvas, type, duree = 500) {
+// Lance l'animation d'un symbole ("x" ou "o") sur un canvas donné, synchronisée sur son son
+function animerSymbole(canvas, type, audio) {
     const ctx = canvas.getContext("2d");
-    const debut = performance.now();
+    const horloge = creerHorloge(audio);
+    const traits = synchroSons[type];
     const fonctionDessin = type === "x" ? drawX : drawO;
     const variationDepart = type === "x" ? {
         premiereX: (Math.random() - 0.5) * canvas.width * 0.12,
@@ -97,10 +124,11 @@ function animerSymbole(canvas, type, duree = 500) {
         secondeY: (Math.random() - 0.5) * canvas.height * 0.12
     } : {};
 
-    function frame(maintenant) {
-        const progress = Math.min((maintenant - debut) / duree, 1);
-        fonctionDessin(ctx, canvas, progress, variationDepart);
-        if (progress < 1) requestAnimationFrame(frame);
+    function frame() {
+        const temps = horloge();
+        const avancements = traits.map((trait) => avancementTrait(temps, trait));
+        fonctionDessin(ctx, canvas, type === "x" ? avancements : avancements[0], variationDepart);
+        if (avancements[avancements.length - 1] < 1) requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
 }
@@ -122,29 +150,32 @@ function dessinerGrille(ctx, canvas, progress) {
     ];
 
     for (let index = 0; index < lignes.length; index++) {
-        const debut = index * 0.18;
-        const progressionLigne = Math.min(Math.max((progress - debut) / 0.4, 0), 1);
+        // progress : avancement de chaque ligne (tableau), ou un nombre global
+        const progressionLigne = Array.isArray(progress)
+            ? progress[index]
+            : Math.min(Math.max((progress - index * 0.18) / 0.4, 0), 1);
         const [x1, y1, x2, y2] = lignes[index];
         dessinerTraitAvecJitter(ctx, x1, y1, x2, y2, progressionLigne, 4, 40);
     }
 }
 
-// Lance le dessin animé de la grille
-function animerGrille(canvas, duree = 900) {
+// Lance le dessin animé de la grille, synchronisé sur son son
+function animerGrille(canvas, audio) {
     const ctx = canvas.getContext("2d");
-    const debut = performance.now();
+    const horloge = creerHorloge(audio);
 
-    function frame(maintenant) {
-        const progress = Math.min((maintenant - debut) / duree, 1);
-        dessinerGrille(ctx, canvas, progress);
-        if (progress < 1) requestAnimationFrame(frame);
+    function frame() {
+        const temps = horloge();
+        const avancements = synchroSons.grille.map((trait) => avancementTrait(temps, trait));
+        dessinerGrille(ctx, canvas, avancements);
+        if (avancements[avancements.length - 1] < 1) requestAnimationFrame(frame);
     }
 
     requestAnimationFrame(frame);
 }
 
 // Trace une ligne animée façon crayon qui raye le patron gagnant
-function animerLigneVictoire(canvas, x1, y1, x2, y2, duree = 500) {
+function animerLigneVictoire(canvas, x1, y1, x2, y2, audio) {
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
     const ctx = canvas.getContext("2d");
@@ -164,9 +195,9 @@ function animerLigneVictoire(canvas, x1, y1, x2, y2, duree = 500) {
     const finX = x2 + ux * prolongement;
     const finY = y2 + uy * prolongement;
 
-    const debut = performance.now();
-    function frame(maintenant) {
-        const progress = Math.min((maintenant - debut) / duree, 1);
+    const horloge = creerHorloge(audio);
+    function frame() {
+        const progress = avancementTrait(horloge(), synchroSons.ligne[0]);
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         dessinerTraitAvecJitter(ctx, debutX, debutY, finX, finY, progress, 2, 80);
         if (progress < 1) requestAnimationFrame(frame);

@@ -14,6 +14,13 @@ let ligneVictoireCanvas = document.querySelector("#ligne-victoire");
 let grille = document.querySelector("#grille");
 let grilleDessinCanvas = document.querySelector("#grille-dessin");
 let joueurs = document.querySelectorAll(".player");
+let audioAmbiance = document.querySelector("#audio-ambiance");
+let audioRond = document.querySelector("#audio-rond");
+let audioCroix = document.querySelector("#audio-croix");
+let audioGrille = document.querySelector("#audio-grille");
+let audioLigne = document.querySelector("#audio-ligne");
+let audioVictoire = document.querySelector("#audio-victoire");
+let audioErreur = document.querySelector("#audio-erreur");
 
 
 let joueurX = true; //premier joueur X
@@ -22,9 +29,23 @@ let jeuActif = true;
 let partieCommencee = false;
 let delaiLigneVictoire = null;
 let delaiEcranFin = null;
-const delaiAvantLigneVictoire = 900;
-const dureeLigneVictoire = 500;
+const delaiAvantLigneVictoire = 1500; // après la fin du dessin du dernier symbole (croix : 1280 ms)
+const dureeLigneVictoire = synchroSons.ligne[0][1]; // fin du trait de la ligne gagnante (canvas-symbols.js)
 const delaiApresLigneVictoire = 500;
+const jouerSon = function (audio) {
+    audio.currentTime = 0;
+    const lecture = audio.play();
+    if (lecture) lecture.catch(() => {});
+};
+
+// Ambiance : plus basse pour laisser entendre le crayon, et bouclée à la fin du son
+// (le fichier se termine par ~7 s de silence qui couperaient la boucle)
+const volumeAmbiance = 0.2;
+const finSonAmbiance = 12.9; // en secondes
+audioAmbiance.volume = volumeAmbiance;
+audioAmbiance.addEventListener("timeupdate", function () {
+    if (audioAmbiance.currentTime >= finSonAmbiance) audioAmbiance.currentTime = 0;
+});
 const patrons = [ //les patrons gagnants
     [0, 1, 2],
     [0, 3, 6],
@@ -67,16 +88,21 @@ for (let boite of cases) {
     const canvas = boite.querySelector("canvas");
     redimensionnerCanvas(canvas);
     boite.addEventListener("click", function () {
-        if (boite.active && partieCommencee) {
+        if (boite.dataset.value && jeuActif && partieCommencee) {
+            jouerSon(audioErreur); // case déjà remplie
+        }
+        else if (boite.active && partieCommencee) {
             redimensionnerCanvas(canvas); // au cas où la mise en page aurait changé
             if (joueurX) {
                 boite.dataset.value = "X";
-                animerSymbole(canvas, "x");
+                jouerSon(audioCroix);
+                animerSymbole(canvas, "x", audioCroix);
                 joueurX = false;
             }
             else {
                 boite.dataset.value = "O";
-                animerSymbole(canvas, "o");
+                jouerSon(audioRond);
+                animerSymbole(canvas, "o", audioRond);
                 joueurX = true;
             }
             grille.dataset.currentPlayer = joueurX ? "x" : "o";
@@ -150,7 +176,9 @@ const traceLigneSurPatron = function (patron) {
     };
     const p1 = centreCase(patron[0]);
     const p2 = centreCase(patron[2]);
-    animerLigneVictoire(ligneVictoireCanvas, p1.x, p1.y, p2.x, p2.y);
+    jouerSon(audioLigne);
+    jouerSon(audioVictoire);
+    animerLigneVictoire(ligneVictoireCanvas, p1.x, p1.y, p2.x, p2.y, audioLigne);
 };
 
 //Affiche message
@@ -184,17 +212,20 @@ const afficheMessage = function (msg) {
 jouerBtn.addEventListener("click", function () {
     ecranAttente.classList.remove("visible");
     partieCommencee = true;
+    jouerSon(audioAmbiance);
+    jouerSon(audioGrille);
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         dessinerGrille(grilleDessinCanvas.getContext("2d"), grilleDessinCanvas, 1);
     }
     else {
-        animerGrille(grilleDessinCanvas);
+        animerGrille(grilleDessinCanvas, audioGrille);
     }
 });
 
 replayBtn.addEventListener("click", function () {
     clearTimeout(delaiEcranFin);
+    audioVictoire.pause();
     ecranFin.classList.remove("visible");
     videCases();
     afficheMessage("");
