@@ -1,19 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sacha Martin</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=22">
 </head>
 
 <body>
     <h1>Sacha Martin Website</h1>
     <h2>Welcome to my website</h2>
-    <p>Motion Graphic space <a href="mg.html">HERE</a></p>
-    <p>Web3 Space <a href="web3.html">HERE</a></p>
+    <p class="intro" lang="fr">Bienvenue dans l'espace où je rassemble mes travaux de cours. Vous trouverez d'abord les matières où je présente mes projets, puis un résumé des autres matières que j'ai suivies.</p>
+    <p class="intro" lang="en">Welcome to the space where I gather my coursework. First you'll find the courses where I present my projects, then a summary of the other courses I took.</p>
 
+    <h3 class="section"><span lang="fr">Matières avec projets</span><span lang="en">Courses with projects</span></h3>
+    <p class="section-note" lang="fr">Chaque matière a son propre espace : cliquez sur HERE pour voir mes réalisations.</p>
+    <p class="section-note" lang="en">Each course has its own space: click HERE to see my work.</p>
+
+    <div class="project">
+        <p><span lang="fr">Web 3 (Interfaces Utilisateurs &amp; Jeux Vidéos)</span><span lang="en">Web 3 (User Interfaces &amp; Video Games)</span><a href="web3exercise.html">HERE</a></p>
+        <p class="desc" lang="fr">Axé sur la programmation de sites dynamiques, d'interfaces et de jeux web interactifs (JavaScript, HTML, CSS et balise <code>&lt;canvas&gt;</code>). L'apprentissage combine la logique de code, la création d'animations fluides, l'intégration d'une identité sonore et des présentations orales en français, sans recours à l'intelligence artificielle pour les projets finaux.</p>
+        <p class="desc" lang="en">Focused on programming dynamic websites, interfaces and interactive web games (JavaScript, HTML, CSS and the <code>&lt;canvas&gt;</code> element). The learning combines code logic, creating smooth animations, integrating a sound identity and oral presentations in French, with no use of artificial intelligence for the final projects.</p>
+        <p class="desc space" lang="fr">Dans cet espace : mes jeux web, jouables directement dans le navigateur.</p>
+        <p class="desc space" lang="en">In this space: my web games, playable right in the browser.</p>
+    </div>
+
+    <div class="project">
+        <p>Motion Graphics 1<a href="mg.html">HERE</a></p>
+        <p class="desc" lang="fr">Exploration de l'animation graphique appliquée à la vidéo, à la photographie et aux illustrations. L'objectif est de maîtriser la composition de séquences de titres, d'animer des éléments visuels et d'employer le design en mouvement pour résoudre des problématiques de communication.</p>
+        <p class="desc" lang="en">Exploring graphic animation applied to video, photography and illustration. The goal is to master the composition of title sequences, animate visual elements and use motion design to solve communication problems.</p>
+        <p class="desc space" lang="fr">Dans cet espace : mes exercices d'animation, mon générique de titre et les références étudiées en cours.</p>
+        <p class="desc space" lang="en">In this space: my animation exercises, my title sequence and the references studied in class.</p>
+    </div>
+
+    <h3 class="section"><span lang="fr">Autres matières suivies</span><span lang="en">Other courses taken</span></h3>
+    <p class="section-note" lang="fr">Un résumé de ce que j'ai appris dans les autres cours de ma session.</p>
+    <p class="section-note" lang="en">A summary of what I learned in the other courses of my semester.</p>
+
+    <div class="info">
+        <p><span lang="fr">Design Sonore pour le Multimédia</span><span lang="en">Sound Design for Multimedia</span></p>
+        <p class="desc" lang="fr">Immersion dans les principes de l'acoustique, de la sémantique auditive et l'utilisation d'une station de travail audio numérique (DAW). Les travaux pratiques englobent la production de publicités radio, l'enregistrement de podcasts, le doublage (ADR) et la conception de bandes sonores originales via la maîtrise du mixage, de l'égalisation et de la compression.</p>
+        <p class="desc" lang="en">An immersion in the principles of acoustics, auditory semantics and the use of a digital audio workstation (DAW). The hands-on work includes producing radio ads, recording podcasts, dubbing (ADR) and designing original soundtracks through mastering mixing, equalization and compression.</p>
+    </div>
+
+    <div class="info">
+        <p><span lang="fr">Documents Fonctionnels</span><span lang="en">Functional Documents</span></p>
+        <p class="desc" lang="fr">Apprentissage de logiciels professionnels d'illustration, de retouche d'image et de mise en page (InDesign, Illustrator, Photoshop) pour concevoir des supports multimédias bilingues (français/anglais) adaptés aux utilisateurs. Les livrables principaux comprennent des questionnaires UI/UX, des infographies et un guide d'utilisation complet.</p>
+        <p class="desc" lang="en">Learning professional illustration, photo editing and layout software (InDesign, Illustrator, Photoshop) to design bilingual (French/English) multimedia materials tailored to users. The main deliverables include UI/UX questionnaires, infographics and a complete user guide.</p>
+    </div>
+
+    <div class="info">
+        <p>Design Thinking</p>
+        <p class="desc" lang="fr">Étude des méthodes de résolution créative de problèmes en communication visuelle. La démarche met l'accent sur l'équilibre entre la forme et la fonction à travers des projets web et imprimés (affiches conceptuelles, campagnes publicitaires), appuyés par l'analyse des publics cibles et une réflexion stratégique.</p>
+        <p class="desc" lang="en">A study of creative problem-solving methods in visual communication. The approach emphasizes the balance between form and function through web and print projects (concept posters, advertising campaigns), backed by target audience analysis and strategic thinking.</p>
+    </div>
+
+    <div class="info">
+        <p><span lang="fr">L'Expérience de l'Art</span><span lang="en">The Art Experience</span></p>
+        <p class="desc" lang="fr">Exploration des pratiques artistiques contemporaines s'articulant autour de l'analyse critique, de visites de galeries sur le terrain et de la création manuelle en atelier (dessin au graphite et sculpture) pour comprendre comment les formes et les matériaux véhiculent du sens.</p>
+        <p class="desc" lang="en">An exploration of contemporary art practices built around critical analysis, gallery field trips and hands-on studio work (graphite drawing and sculpture) to understand how forms and materials convey meaning.</p>
+    </div>
+
+    <script src="lang.js"></script>
+    <script src="reveal.js" defer></script>
 </body>
 
 </html>

@@ -1,28 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sacha Martin</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=22">
 </head>
 
-<body>
+<body class="web-space">
     <h1>Sacha Martin Website</h1>
-    <h2>That is my Motion graphics exercise</h2>
+    <h2>My Web Projects</h2>
+    <p class="intro" lang="fr">Voici mes projets web. Les aperçus ci-dessous sont les vrais jeux en direct : cliquez dessus pour y jouer en plein écran.</p>
+    <p class="intro" lang="en">Here are my web projects. The previews below are the actual games running live: click one to play it full screen.</p>
     <div>
         <p>Project 1 | Tic Tac Toe<a href="web/tic-tac-toe">HERE</a></p>
+        <p class="desc" lang="fr"><strong>Projet d'intégration multimédia : Jeu interactif et design sonore (Web 3)</strong><br>
+            Dans le cadre de mon cours d'intégration multimédia au Collège Vanier, j'ai conçu et développé de zéro un jeu interactif complet (un jeu de Tic-Tac-Toe web) ainsi que son identité visuelle et auditive personnalisée, sans recourir à l'intelligence artificielle ni à des ressources préexistantes, pour les éléments visuels.</p>
+        <details class="desc more" lang="fr">
+            <summary><span class="more-open">Voir plus</span><span class="more-close">Voir moins</span></summary>
+            <p><strong>Ma démarche graphique :</strong> Quand on me parlait de Tic-Tac-Toe, je pensais tout de suite à l'école, aux parties griffonnées sur un coin de cahier entre deux cours. J'ai donc voulu reproduire les mêmes conditions : une feuille lignée en fond, un crayon, une règle et des ciseaux posés autour de la grille, des croix et des ronds qui se tracent à la main avec un léger tremblement, et une ambiance sonore de salle de classe.</p>
+            <p>Le projet s'est articulé autour de deux volets principaux :</p>
+            <ul>
+                <li><strong>Le développement de l'interface et de la logique de jeu :</strong> J'ai exploré différentes pistes créatives au moyen d'une planche d'exploration sur Figma et présenté régulièrement mes avancées en critique constructive devant mon groupe de classe. Le produit final intègre des micro-interactions fluides, ainsi qu'un langage visuel entièrement original et cohérent.</li>
+                <li><strong>La création de la trame et de l'identité sonore :</strong> J'ai composé et intégré une librairie audio sur mesure comprenant six clips originaux (effets sonores de sélection, boutons d'action, boucle d'ambiance et ritournelle de fin) afin d'enrichir la sémantique auditive et l'immersion de l'utilisateur.</li>
+            </ul>
+        </details>
+        <p class="desc" lang="en"><strong>Multimedia Integration Project: Interactive Game and Sound Design (Web 3)</strong><br>
+            As part of my multimedia integration course at Vanier College, I designed and developed from scratch a complete interactive game (a web Tic-Tac-Toe) along with its own custom visual and audio identity, without using artificial intelligence or pre-existing assets for the visual elements.</p>
+        <details class="desc more" lang="en">
+            <summary><span class="more-open">See more</span><span class="more-close">See less</span></summary>
+            <p><strong>My graphic approach:</strong> Whenever someone mentioned Tic-Tac-Toe, I immediately thought of school and of games scribbled in the corner of a notebook between classes. So I set out to recreate those exact conditions: lined paper in the background, a pencil, a ruler and scissors laid around the grid, X's and O's drawn by hand with a slight tremor, and a classroom soundscape.</p>
+            <p>The project was built around two main parts:</p>
+            <ul>
+                <li><strong>Developing the interface and game logic:</strong> I explored different creative directions through an exploration board on Figma and regularly presented my progress for constructive critique in front of my class. The final product features smooth micro-interactions and an entirely original, consistent visual language.</li>
+                <li><strong>Creating the soundtrack and sound identity:</strong> I composed and integrated a custom audio library of six original clips (selection sound effects, action buttons, an ambient loop and an ending jingle) to enrich the auditory semantics and the user's immersion.</li>
+            </ul>
+        </details>
         <a class="preview" href="web/tic-tac-toe">
             <iframe src="web/tic-tac-toe" title="Tic Tac Toe preview" loading="lazy" tabindex="-1"></iframe>
         </a>
     </div>
     <div>
-        <p>Project 2 | Animated Games<a href="web/game2">HERE</a></p>
+        <p>Project 2 | Animated Games
+            <!-- Mention « en cours » : supprimer ces deux lignes quand le projet est terminé -->
+            <span class="status" lang="fr">En cours</span>
+            <span class="status" lang="en">In progress</span>
+            <a href="web/game2">HERE</a></p>
+        <p class="desc" lang="fr"><strong>Développement d'un jeu web animé</strong><br>
+            Après le Tic-Tac-Toe, j'ai programmé un jeu web complet en HTML5 Canvas : le joueur déplace son personnage pour attraper tous les goodies. Ce projet m'a permis de mettre en pratique la logique de programmation pour faire fonctionner les règles, l'affichage et les actions du joueur.</p>
+        <details class="desc more" lang="fr">
+            <summary><span class="more-open">Voir plus</span><span class="more-close">Voir moins</span></summary>
+            <p>La partie technique de ce projet s'est appuyée sur :</p>
+            <ul>
+                <li><strong>La structure du code :</strong> Écriture et adaptation d'un code propre et sans bogues à partir de bases et de tutoriels, afin de créer un système de jeu logique et fonctionnel sur ordinateur et sur mobile.</li>
+                <li><strong>Les animations et interactions :</strong> Programmation d'une boucle d'animation fluide, de la détection des collisions et de contrôles dynamiques (flèches du clavier sur ordinateur, flèches tactiles sur mobile) pour rendre le jeu vivant et agréable à utiliser.</li>
+                <li><strong>L'autonomie en programmation :</strong> Développement complet des fonctionnalités et résolution des problèmes de code par moi-même, sans utiliser d'intelligence artificielle.</li>
+            </ul>
+        </details>
+        <p class="desc" lang="en"><strong>Developing an Animated Web Game</strong><br>
+            After the Tic-Tac-Toe, I programmed a complete web game in HTML5 Canvas: the player moves a character around to collect all the goodies. This project let me put programming logic into practice to make the rules, the display and the player's actions work.</p>
+        <details class="desc more" lang="en">
+            <summary><span class="more-open">See more</span><span class="more-close">See less</span></summary>
+            <p>The technical side of this project relied on:</p>
+            <ul>
+                <li><strong>Code structure:</strong> Writing and adapting clean, bug-free code from starter bases and tutorials to build a logical game system that works on both desktop and mobile.</li>
+                <li><strong>Animations and interactions:</strong> Programming a smooth animation loop, collision detection and dynamic controls (keyboard arrows on desktop, touch arrows on mobile) to make the game lively and enjoyable to use.</li>
+                <li><strong>Programming autonomy:</strong> Building all the features and solving code problems on my own, without using artificial intelligence.</li>
+            </ul>
+        </details>
         <a class="preview" href="web/game2">
             <iframe src="web/game2" title="Animated Games preview" loading="lazy" tabindex="-1"></iframe>
         </a>
     </div>
+    <script src="lang.js"></script>
+    <script src="reveal.js" defer></script>
 </body>
 
 </html>
